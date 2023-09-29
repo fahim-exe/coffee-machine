@@ -18,7 +18,7 @@ internal = ["report", "off", "reset", "refill"]
 menu = ["latte", "cappuccino", "espresso"]
 
 while True:
-    user_input = input("What would you like? \nEspresso: 1$ \nLatte: 2.50$ \nCuppuccino:3.5$ \nPlease select your coffee:").lower()
+    user_input = input("What would you like? \nEspresso: 0.50$ \nLatte: 1.50$ \nCuppuccino:2.5$ \nPlease select your coffee:").lower()
     print()
 
     if user_input in internal:
@@ -50,8 +50,7 @@ while True:
                 if fill_item=="m":
                     tank['milk'] = fill
                 if fill_item=="c":
-                    tank['coffee'] = fill
-            
+                    tank['coffee'] = fill         
 
                 
 
@@ -59,6 +58,7 @@ while True:
             else:
 
                 while True:
+                    
 
                     w = int(input("Please enter water quantity: "))
                     m = int(input("Please enter milk quantity: "))
@@ -92,75 +92,81 @@ while True:
         n = int(input("How many nickels?: ")) #0.05
         p = int(input("How many pennies?: ")) #0.01
 
-        paid = (q*0.25)+(d*0.10)+(n*0.05)+(p*0.01)
-        
+        paid = round((q*0.25)+(d*0.10)+(n*0.05)+(p*0.01), 2)
+        check = Coffee.check_resources(tank, user_input)
+        if check!=True:
+                print("Machine Needs Servicing!!!!!")
+                print(f"Please take the returned money ${paid}")
+                print()
+                continue
         
 
 
-        if paid>=0.50 and user_input=="espresso":
+        if user_input=="espresso":
+            if paid<0.5:
+                print(f"Please take returned money ${paid}")
+                print()
+                continue
+
             change = round((paid-0.50), 2)
-            check = Coffee.check_resources(tank, user_input)
+            
+            
+
             if check:
-                tank["money"] = tank['money']+1
+                tank["money"] = tank['money']+0.50
                 tank['water'] = tank["water"]-50
                 tank["coffee"] = tank["coffee"]-18
 
                 if change>0:
-                    print(f"Here is ${change} in change.")
+                    print(f"Here is ${change} in change.")               
 
-                
-
-                print("Here is your latte... Enjoy!!!")
+                print("Here is your Espresso.... Enjoy!!!")
                 print("")
 
-        if paid>=1.5 and user_input=="latte":
+        if user_input=="latte":
+            if paid<1.5:
+                print(f"Please take returned money ${paid}")
+                print()
+                continue
             change = paid-1.5
-            check = Coffee.check_resources(tank, user_input)
+            
             if check:
-                tank["money"] = tank['money']+1
-                tank['water'] = tank["water"]-50
-                tank["coffee"] = tank["coffee"]-18
+                tank["money"] = tank['money']+1.5
+                tank['water'] = tank["water"]-200
+                tank["coffee"] = tank["coffee"]-24
                 tank["milk"] = tank["milk"]-150
 
                 if change>0:
                     print(f"Here is ${change} in change.")
 
+                print("Here is your Latte.... Enjoy!!!")
+                print("")
+
             
 
-        if paid>=2.5 and user_input=="cappuccino":
-            change = paid-3.5
-            check = Coffee.check_resources(tank, user_input)
+        if user_input=="cappuccino":
+            if paid<2.5:
+                print(f"Please take returned money ${paid}")
+                print()
+                continue
+            change = paid-2.5
+            
             if check:
-                tank["money"] = tank['money']+1
-                tank['water'] = tank["water"]-50
-                tank["coffee"] = tank["coffee"]-18
+                tank["money"] = tank['money']+2.5
+                tank['water'] = tank["water"]-250
+                tank["coffee"] = tank["coffee"]-24
+                tank["milk"] = tank["milk"]-100
 
                 if change>0:
                     print(f"Here is ${change} in change.")
 
+                print("Here is your Cappuccino.... Enjoy!!!")
+                print("")
+
             
 
 
 
-
-
-        
-        
-
-        
-        
-
-    if user_input=="latte":
-        pass
-
-    if user_input=="cuppuccino":
-        pass
-
-    
-
-    
-
-    
 
     if user_input not in (internal+menu):
         print("Please enter a valid input!!!")
